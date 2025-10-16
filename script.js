@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoUpload = document.getElementById('logo-upload');
     const colorSwatches = document.querySelectorAll('.color-swatch');
     const loader = document.getElementById('loader');
+    const logoControls = document.getElementById('logo-controls');
+    const scaleSlider = document.getElementById('scale-slider');
+    const rotateSlider = document.getElementById('rotate-slider');
+    const scaleValue = document.getElementById('scale-value');
+    const rotateValue = document.getElementById('rotate-value');
+    const downloadBtn = document.getElementById('download-btn');
+    const exportCanvas = document.getElementById('export-canvas');
     
     // Configuration
     const availableColors = ['blue', 'pink', 'yellow'];
@@ -12,6 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxFileSize = 5 * 1024 * 1024;
     let currentColor = 'blue';
     let isLoading = false;
+    let logoScale = 100;
+    let logoRotation = 0;
+    
+    // Update logo transform
+    function updateLogoTransform() {
+        logoPreview.style.transform = 'translateX(-50%) scale(' + (logoScale / 100) + ') rotate(' + logoRotation + 'deg)';
+    }
     
     // Set initial umbrella image
     umbrellaImage.src = 'images/' + currentColor.charAt(0).toUpperCase() + currentColor.slice(1) + ' umbrella.png';
@@ -94,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 loader.style.display = 'none';
                 umbrellaImage.style.display = 'block';
                 logoPreview.style.display = 'block';
+                logoControls.classList.remove('hidden');
+                downloadBtn.classList.remove('hidden');
+                updateLogoTransform();
             }, loadingDuration);
         };
         
@@ -105,6 +122,71 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         reader.readAsDataURL(file);
+    });
+    
+    // Scale slider
+    scaleSlider.addEventListener('input', function() {
+        logoScale = this.value;
+        scaleValue.textContent = logoScale + '%';
+        updateLogoTransform();
+    });
+    
+    // Rotate slider
+    rotateSlider.addEventListener('input', function() {
+        logoRotation = this.value;
+        rotateValue.textContent = logoRotation + '°';
+        updateLogoTransform();
+    });
+    
+    // Download functionality
+    downloadBtn.addEventListener('click', function() {
+        const canvas = exportCanvas;
+        const ctx = canvas.getContext('2d');
+        const containerRect = umbrellaImage.getBoundingClientRect();
+        
+        canvas.width = umbrellaImage.naturalWidth;
+        canvas.height = umbrellaImage.naturalHeight;
+        
+        // Draw umbrella
+        ctx.drawImage(umbrellaImage, 0, 0);
+        
+        // Draw logo if exists
+        if (logoPreview.src && logoPreview.src.indexOf('data:') === 0) {
+            const logoImg = new Image();
+            logoImg.onload = function() {
+                ctx.save();
+                
+                // Match CSS positioning: bottom 10%, center horizontally
+                const logoX = canvas.width * 0.5;
+                const logoY = canvas.height * 0.85; // Adjusted to match CSS bottom: 10%
+                
+                // Calculate logo size (max 30% of umbrella width as per CSS)
+                const maxLogoWidth = canvas.width * 0.3;
+                const logoAspectRatio = logoImg.width / logoImg.height;
+                let logoWidth = Math.min(maxLogoWidth, logoImg.width * (logoScale / 100));
+                let logoHeight = logoWidth / logoAspectRatio;
+                
+                // Apply transforms
+                ctx.translate(logoX, logoY);
+                ctx.rotate(logoRotation * Math.PI / 180);
+                ctx.drawImage(logoImg, -logoWidth / 2, -logoHeight / 2, logoWidth, logoHeight);
+                
+                ctx.restore();
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'custom-umbrella.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            logoImg.src = logoPreview.src;
+        } else {
+            // Download without logo
+            const link = document.createElement('a');
+            link.download = 'custom-umbrella.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
     });
     
     // Set initial theme

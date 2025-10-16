@@ -220,3 +220,86 @@ body.theme-yellow .upload-button { background-color: var(--primary-yellow); colo
     opacity: 0.5;
     cursor: not-allowed;
 }
+/* Logo controls */
+.logo-controls {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    cursor: pointer;
+    border: none;
+}
+
+.download-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    border: none;
+    margin-top: 15px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+    background-color: #45a049;
+}
+
+#export-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Theme colors for sliders */
+body.theme-blue .slider::-webkit-slider-thumb { background: var(--primary-blue); }
+body.theme-pink .slider::-webkit-slider-thumb { background: var(--primary-pink); }
+body.theme-yellow .slider::-webkit-slider-thumb { background: var(--primary-yellow); }
+
+body.theme-blue .slider::-moz-range-thumb { background: var(--primary-blue); }
+body.theme-pink .slider::-moz-range-thumb { background: var(--primary-pink); }
+body.theme-yellow .slider::-moz-range-thumb { background: var(--primary-yellow); }
