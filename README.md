@@ -19,6 +19,9 @@ A professional web application that allows users to customize umbrellas by selec
 - **Rotation Control**: Rotate logos from -180° to +180° with live degree display
 - **Combined Transforms**: Scale and rotation work together seamlessly
 - **Boundary Respect**: Logo stays within umbrella boundaries
+- **Undo/Redo System**: Revert or restore logo changes with action buttons
+- **Reset Function**: One-click return to default logo settings
+- **Interactive Tooltips**: Helpful guidance for all controls
 
 ### 💾 Export Functionality
 - **High-Quality PNG Export**: Download customized umbrella as PNG image
@@ -26,11 +29,18 @@ A professional web application that allows users to customize umbrellas by selec
 - **Canvas-Based Rendering**: Professional image generation with proper positioning
 - **One-Click Download**: Simple button triggers instant file download
 
+### 🎆 3D Interaction
+- **Drag to Rotate**: Click and drag umbrella for 3D rotation effect
+- **Smooth Animation**: Realistic depth simulation with CSS transforms
+- **Auto Reset**: Returns to center position when drag is released
+- **Visual Feedback**: Cursor changes and smooth transitions
+
 ### 🎯 User Experience
 - **Responsive Design**: Works perfectly on desktop and mobile devices
 - **Accessibility**: Screen reader support with proper ARIA labels
 - **Intuitive Controls**: Clear labels and real-time value indicators
 - **Loading States**: Visual feedback during all operations
+- **Smart Tooltips**: Contextual help for all interactive elements
 
 ## Technologies Used
 
@@ -83,7 +93,10 @@ cd Revize-Umbrella
 ### Step 3: Customize Logo (Optional)
 - **Scale**: Use the scale slider to resize (50%-150%)
 - **Rotate**: Use the rotate slider to adjust angle (-180° to +180°)
-- See changes applied in real-time
+- **Undo/Redo**: Use ↶ and ↷ buttons to revert or restore changes
+- **Reset**: Click ⟲ button to return to default settings
+- **3D Preview**: Drag the umbrella to see it from different angles
+- See changes applied in real-time with helpful tooltips
 
 ### Step 4: Download Your Design
 - Click "DOWNLOAD PNG" button
@@ -121,6 +134,9 @@ All features work seamlessly on mobile devices with touch-friendly controls.
 - **Canvas Rendering**: Precise logo positioning matching CSS preview
 - **File Processing**: Efficient image loading and validation
 - **State Management**: Clean application state handling
+- **History System**: Efficient undo/redo with state tracking
+- **3D Rotation**: Mouse-based umbrella rotation with transform limits
+- **Event Optimization**: Smooth drag interactions with performance tuning
 
 ## License
 

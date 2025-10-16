@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const rotateValue = document.getElementById('rotate-value');
     const downloadBtn = document.getElementById('download-btn');
     const exportCanvas = document.getElementById('export-canvas');
+    const umbrellaContainer = document.getElementById('umbrella-container');
+    const undoBtn = document.getElementById('undo-btn');
+    const redoBtn = document.getElementById('redo-btn');
+    const resetBtn = document.getElementById('reset-btn');
     
     // Configuration
     const availableColors = ['blue', 'pink', 'yellow'];
@@ -21,10 +25,35 @@ document.addEventListener('DOMContentLoaded', function() {
     let isLoading = false;
     let logoScale = 100;
     let logoRotation = 0;
+    let umbrellaRotationX = 0;
+    let umbrellaRotationY = 0;
+    let isDragging = false;
+    
+    // Undo/Redo system
+    let history = [];
+    let historyIndex = -1;
+    
+    function saveState() {
+        const state = { scale: logoScale, rotation: logoRotation };
+        history = history.slice(0, historyIndex + 1);
+        history.push(state);
+        historyIndex++;
+        updateUndoRedoButtons();
+    }
+    
+    function updateUndoRedoButtons() {
+        undoBtn.disabled = historyIndex <= 0;
+        redoBtn.disabled = historyIndex >= history.length - 1;
+    }
     
     // Update logo transform
     function updateLogoTransform() {
         logoPreview.style.transform = 'translateX(-50%) scale(' + (logoScale / 100) + ') rotate(' + logoRotation + 'deg)';
+    }
+    
+    // Update umbrella rotation
+    function updateUmbrellaRotation() {
+        umbrellaContainer.style.transform = 'rotateX(' + umbrellaRotationX + 'deg) rotateY(' + umbrellaRotationY + 'deg)';
     }
     
     // Set initial umbrella image
@@ -111,6 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 logoControls.classList.remove('hidden');
                 downloadBtn.classList.remove('hidden');
                 updateLogoTransform();
+                
+                // Initialize undo/redo system
+                history = [{ scale: 100, rotation: 0 }];
+                historyIndex = 0;
+                updateUndoRedoButtons();
             }, loadingDuration);
         };
         
@@ -131,12 +165,16 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLogoTransform();
     });
     
+    scaleSlider.addEventListener('change', saveState);
+    
     // Rotate slider
     rotateSlider.addEventListener('input', function() {
         logoRotation = this.value;
         rotateValue.textContent = logoRotation + '°';
         updateLogoTransform();
     });
+    
+    rotateSlider.addEventListener('change', saveState);
     
     // Download functionality
     downloadBtn.addEventListener('click', function() {
@@ -187,6 +225,86 @@ document.addEventListener('DOMContentLoaded', function() {
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
+    });
+    
+    // Umbrella drag rotation
+    let startX, startY;
+    
+    umbrellaContainer.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        umbrellaContainer.classList.add('rotating');
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        
+        umbrellaRotationY = Math.max(-30, Math.min(30, deltaX * 0.2));
+        umbrellaRotationX = Math.max(-15, Math.min(15, -deltaY * 0.1));
+        
+        updateUmbrellaRotation();
+    });
+    
+    document.addEventListener('mouseup', function() {
+        if (isDragging) {
+            isDragging = false;
+            umbrellaContainer.classList.remove('rotating');
+            
+            // Reset rotation smoothly
+            setTimeout(function() {
+                umbrellaRotationX = 0;
+                umbrellaRotationY = 0;
+                updateUmbrellaRotation();
+            }, 100);
+        }
+    });
+    
+    // Undo button
+    undoBtn.addEventListener('click', function() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            const state = history[historyIndex];
+            logoScale = state.scale;
+            logoRotation = state.rotation;
+            scaleSlider.value = logoScale;
+            rotateSlider.value = logoRotation;
+            scaleValue.textContent = logoScale + '%';
+            rotateValue.textContent = logoRotation + '°';
+            updateLogoTransform();
+            updateUndoRedoButtons();
+        }
+    });
+    
+    // Redo button
+    redoBtn.addEventListener('click', function() {
+        if (historyIndex < history.length - 1) {
+            historyIndex++;
+            const state = history[historyIndex];
+            logoScale = state.scale;
+            logoRotation = state.rotation;
+            scaleSlider.value = logoScale;
+            rotateSlider.value = logoRotation;
+            scaleValue.textContent = logoScale + '%';
+            rotateValue.textContent = logoRotation + '°';
+            updateLogoTransform();
+            updateUndoRedoButtons();
+        }
+    });
+    
+    // Reset button
+    resetBtn.addEventListener('click', function() {
+        logoScale = 100;
+        logoRotation = 0;
+        scaleSlider.value = 100;
+        rotateSlider.value = 0;
+        scaleValue.textContent = '100%';
+        rotateValue.textContent = '0°';
+        updateLogoTransform();
+        saveState();
     });
     
     // Set initial theme
