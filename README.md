@@ -32,10 +32,6 @@ A professional web application that allows users to customize umbrellas by selec
 - **Intuitive Controls**: Clear labels and real-time value indicators
 - **Loading States**: Visual feedback during all operations
 
-## Demo
-
-![Umbrella Configurator Demo](images/Blue%20umbrella.png)
-
 ## Technologies Used
 
 - **HTML5** - Semantic markup structure
