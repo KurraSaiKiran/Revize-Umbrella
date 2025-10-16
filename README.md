@@ -11,10 +11,6 @@ A responsive web application that allows users to customize umbrellas by selecti
 - **Responsive Design**: Works on desktop and mobile devices
 - **File Validation**: Automatic validation for file type and size
 
-## Demo
-
-![Umbrella Configurator Demo](images/Blue%20umbrella.png)
-
 ## Technologies Used
 
 - **HTML5** - Semantic markup structure
