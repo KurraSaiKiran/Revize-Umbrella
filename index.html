@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Umbrella</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="container">
+        <section class="umbrella-preview" aria-label="Umbrella Preview">
+            <div class="umbrella-image-container">
+                <img id="umbrella-image" src="images/Blue umbrella.png" alt="Custom umbrella in blue color">
+                <img id="logo-preview" class="logo-preview hidden" src="" alt="Uploaded logo preview">
+                <div id="loader" class="loader hidden" aria-hidden="true">
+                    <img src="icons/loader_icon.svg" alt="Loading...">
+                </div>
+            </div>
+        </section>
+        <section class="customization-panel" aria-label="Customization Options">
+            <h1>Custom Umbrella</h1>
+            <fieldset class="color-options">
+                <legend class="visually-hidden">Choose umbrella color</legend>
+                <button class="color-swatch pink" data-color="pink" aria-label="Select pink color"></button>
+                <button class="color-swatch blue active" data-color="blue" aria-label="Select blue color" aria-pressed="true"></button>
+                <button class="color-swatch yellow" data-color="yellow" aria-label="Select yellow color"></button>
+            </fieldset>
+            <div class="upload-section">
+                <h2>Customize your umbrella</h2>
+                <p>Upload a logo for an instant preview.</p>
+                <p class="file-info">.png and .jpg files only. Max file size is 5MB.</p>
+                <label for="logo-upload" class="upload-button">
+                    <img src="icons/upload_icon.svg" class="upload-icon" alt="" role="presentation">
+                    <span>UPLOAD LOGO</span>
+                    <input type="file" id="logo-upload" accept=".jpg,.jpeg,.png" hidden aria-describedby="file-info">
+                </label>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
